@@ -43,7 +43,7 @@ class Board
     p 'Want to play again? (y/n)'
     input = gets.chomp.downcase
     if input == 'y'
-      Board.new
+      new_game = Board.new
     else
       exit
     end
@@ -53,7 +53,9 @@ class Board
     #generate board 
     # srand(2)
     arr = [" ", 0]
-    @board_current = Array.new(@max_rows) {Array.new(@max_columns) {arr[rand(2)]}}
+    @board_current = Array.new(@max_rows) do |row|
+      row = Array.new(@max_columns) {arr[rand(2)]}
+    end
     @board_next_state = @board_current
 
     current_cell_state
@@ -92,6 +94,7 @@ class Board
       break 
     end
     p 'Thanks for playing, please come again.'
+    @@counter = 0
     menu
   end
 
