@@ -18,8 +18,6 @@
 
 class Board
 
-  @@counter = 0
-
   NEIGHBORS = [
   [-1,-1], [-1, 0], [-1, 1],
   [ 0,-1], [ 0, 0], [ 0, 1],
@@ -35,6 +33,8 @@ class Board
     p "Enter # of loops"
     @generations = gets.chomp.to_i
 
+    @counter = 0
+
     board_generate
     
   end
@@ -44,8 +44,13 @@ class Board
     input = gets.chomp.downcase
     if input == 'y'
       new_game = Board.new
-    else
+    elsif input == 'n'
       exit
+    else
+      p '*'*15
+      p 'Enter a valid input (y/n)'
+      p '*'*15
+      menu
     end
   end
 
@@ -63,7 +68,7 @@ class Board
 
   def current_cell_state
     #check each cell 
-    @@counter += 1
+    @counter += 1
     @board_current.each_with_index do |array, y_index|
       array.each_with_index do |value, x_index|
         @current_column = x_index
@@ -80,13 +85,13 @@ class Board
   def display
     loop do 
       system("clear")
-      p "Generation #: #{@@counter}"
+      p "Generation #: #{@counter}"
       @board_next_state.each do |row|
         puts row.map { |cell| cell }.join(" ")
       end
       sleep(1)
       @board_current = @board_next_state
-      if @@counter < @generations
+      if @counter < @generations
         current_cell_state 
       else
         break
@@ -94,7 +99,6 @@ class Board
       break 
     end
     p 'Thanks for playing, please come again.'
-    @@counter = 0
     menu
   end
 
