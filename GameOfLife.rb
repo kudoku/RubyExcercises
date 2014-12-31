@@ -20,7 +20,6 @@ class Board
 
   @@counter = 0
 
-
   NEIGHBORS = [
   [-1,-1], [-1, 0], [-1, 1],
   [ 0,-1], [ 0, 0], [ 0, 1],
@@ -52,8 +51,9 @@ class Board
 
   def board_generate
     #generate board 
-    srand(2)
-    @board_current = Array.new(@max_rows) {Array.new(@max_columns) {rand(2)}}
+    # srand(2)
+    arr = [" ", 0]
+    @board_current = Array.new(@max_rows) {Array.new(@max_columns) {arr[rand(2)]}}
     @board_next_state = @board_current
 
     current_cell_state
@@ -77,12 +77,12 @@ class Board
 
   def display
     loop do 
-      p "LOOP#: #{@@counter}"
+      system("clear")
+      p "Generation #: #{@@counter}"
       @board_next_state.each do |row|
         puts row.map { |cell| cell }.join(" ")
       end
-      sleep(0.7)
-      system("clear")
+      sleep(1)
       @board_current = @board_next_state
       if @@counter < @generations
         current_cell_state 
@@ -96,7 +96,7 @@ class Board
   end
 
   def is_alive?(row, column)
-    @board_current[row][column] == 1 ? true : false
+    @board_current[row][column] == 0
   end
 
   def out_of_bounds?(position, boundary)
@@ -134,21 +134,21 @@ class Board
     if is_alive?(@current_row, @current_column)
       #apply living rules
       if @neighbor_count < 2
-        @board_next_state[@current_row][@current_column] = 0
+        @board_next_state[@current_row][@current_column] = " "
       elsif @neighbor_count > 3
-        @board_next_state[@current_row][@current_column] = 0
+        @board_next_state[@current_row][@current_column] = " "
       else
-        @board_next_state[@current_row][@current_column] = 1
+        @board_next_state[@current_row][@current_column] = 0
       end
     else
       #apply dead cell rules
       if @neighbor_count == 3
-        @board_next_state[@current_row][@current_column] = 1 
+        @board_next_state[@current_row][@current_column] = 0 
       end
     end
   end
 
-
 end #class end
+
       
 new_game = Board.new
